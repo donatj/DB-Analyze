@@ -14,6 +14,6 @@ $phar->buildFromDirectory($srcRoot,'/\.php$/');
 
 $phar->setStub(file_get_contents($path . 'stub.php'));
 
-chmod($fpath, 0744);
+//echo (int)chmod($fpath, 0777);
 
 echo "Done!\007" . PHP_EOL;
