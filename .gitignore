@@ -1,0 +1,6 @@
+*.ini
+*.log
+*.phar
+.idea/
+build/*
+!build/README
