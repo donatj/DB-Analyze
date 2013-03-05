@@ -3,7 +3,10 @@
 error_reporting(E_ALL ^ E_NOTICE);
 
 include('functions/global.php');
-include('classes/Database.php');
+
+spl_autoload_register(function($class){
+	require('classes/' . str_replace('\\', '/', $class) . '.php');
+});
 
 if(file_exists('db_analyze.ini')) {
 	$settings = parse_ini_file('db_analyze.ini');

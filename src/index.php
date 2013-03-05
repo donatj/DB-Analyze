@@ -3,74 +3,18 @@
 
 require('init.php');
 
-$shortopts  = "";
-$shortopts .= "f:";  // Required value
-$shortopts .= "v::"; // Optional value
-$shortopts .= "abc"; // These options do not accept values
+$dbase = new DBBase();
+drop( $dbase->find_fk_type_mismatches() );
 
-$longopts  = array(
-	"required:",     // Required value
-	"optional::",    // Optional value
-	"option",        // No value
-	"opt",           // No value
-);
-$options = getopt($shortopts, $longopts);
-var_dump($options);
+// foreach( $table_data as $table ) {
+// 	echo '# ' . $table->name() . PHP_EOL;
+// 	print_r($table->fks_type_mismatch());
+// 	echo PHP_EOL . '--------------' . PHP_EOL;
+// }
 
-$ignore_pks = true;
+die('x');
 
-$tables = db::fetch('show tables', db::FLAT);
-
-$table_data = array();
-
-$integer_types = array('tinyint' => 255, 'smallint' => 65535, 'mediumint' => 16777215, 'int' => 4294967295, 'bigint' => 18446744073709551615);
-$text_types    = array('char' => 255, 'varchar' => 65535, 'tinytext' => 255, 'text' => 65535, 'mediumtext' => 16777215, 'longtext' => 4294967295);
-
-foreach($tables as $table) {
-
-	if($table[0] == '_') continue;
-	
-	//$table_data[ $table ] = array();
-	$columns = db::fetch('show columns from `'. $table .'`');
-	
-	foreach($columns as $column) {
-
-		if($column['Key'] == 'PRI' && $ignore_pks) {
-			//continue;
-		}
-
-		$signed = strpos($column['Type'], 'unsigned') === false;
-		preg_match('/^[a-z]+/sim', $column['Type'], $regs);
-		$type = $regs[0];
-
-		preg_match('/\((\d+)\)/', $column['Type'], $regs);
-		$length = (int)$regs[1];
-
-		//echo $type . PHP_EOL;
-
-		$table_data[ $table ][ $column['Field'] ] = array(
-			'name'         => $column['Field'],
-			'signed'       => $signed,
-			'type'         => $type,
-			'nullable'     => $column['Null'] == 'YES',
-			'integer_type' => isset($integer_types[$type]),
-			'text_type'    => isset($text_types[$type]),
-			'auto_incr'    => $column['Extra'] == 'auto_increment',
-			'length'       => $length,
-		);
-
-	}	
-
-}
-
-drop($table_data);
-
-$fk_diff = array();
-foreach( $table_data as $table_name => $table ) {
-	foreach($table as $column => $col) {
-		$fk_diff[ $column ][ $col['type'] ][ $col['length'] ][] = $table_name;
-	}
-}
+//drop($table_data['error_log']);
 
 echo '# Database Analysis' . PHP_EOL;
 
