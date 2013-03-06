@@ -15,7 +15,7 @@ abstract class Database {
 	public static function make_connection() {
 		global $_ms;
 		self::$link = @mysql_connect(static::$_host, static::$_user, static::$_password);
-		if(!self::$link) trigger_error('Error Connecting to Database', E_USER_ERROR);
+		if(!self::$link) trigger_error('Error Connecting to Database ' . static::$_host, E_USER_ERROR);
 		if(!mysql_select_db(static::$_database)) trigger_error('Cannot Locate Database: ' . static::$_database, E_USER_ERROR);
 
 		mysql_query( "SET NAMES "         . static::$_charset );
@@ -64,7 +64,7 @@ abstract class Database {
 	private static function error($qry, $error, $fatal, $display = true) {
 		global $_ms;
 		//needs logic look into
-		$trace_str = _errorTracer('query');
+		$trace_str = trigger_error('query');
 		if($fatal) {
 			die('<table><td valign="top"><strong>'. $error . '</strong><br /><br /><small>' . $qry . '</small></td><td valign="top">' . $trace_str . '</td></table>');
 		}else{
