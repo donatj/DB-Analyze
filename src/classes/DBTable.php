@@ -46,6 +46,17 @@ class DBTable {
 		return $mismatches;
 	}
 
+	function columns_by_attribute($attribute, $value = true) {
+		$results = array();
+		foreach($this->columns as $field => $column) {
+			if( $column->info[$attribute] == $value ) {
+				$results[$field] = $column;
+			}
+		}
+
+		return $results;
+	}
+
 	function name(){
 		return $this->name;
 	}
