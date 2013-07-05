@@ -88,6 +88,7 @@ class DBColumn {
 			'text_type'    => isset($this->text_types[$type]),
 			'auto_incr'    => $column['Extra'] == 'auto_increment',
 			'length'       => $length,
+			'primary'      => $column['Key'] == 'PRI', //@todo UNI might be a primary too, a mixed one - look into this...
 		);
 	}
 
