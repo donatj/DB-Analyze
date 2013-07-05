@@ -24,12 +24,14 @@ class DBColumn {
 	);
 
 	private $tbl;
+	private $field;
 	private $data = false;
 	private $fks = array();
 	public $info;
 
-	function __construct(DBTable $table, $columndata){
+	function __construct(DBTable $table, $field, $columndata){
 		$this->tbl  = $table;
+		$this->field = $field;
 		$this->data = $columndata;
 		$this->analyze();
 	}
@@ -39,7 +41,7 @@ class DBColumn {
 	}
 
 	function name() {
-		return $this->info['name'];
+		return $this->field;
 	}
 
 	function add_fk(DBColumn $fk) {
@@ -67,7 +69,7 @@ class DBColumn {
 	}
 
 	function analyze() {
-		$column = $this->data;
+		$column = $this->data();
 		$signed = strpos($column['Type'], 'unsigned') === false;
 		preg_match('/^[a-z]+/sim', $column['Type'], $regs);
 		$type = $regs[0];

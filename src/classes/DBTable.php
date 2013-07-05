@@ -17,7 +17,7 @@ class DBTable {
 		$columns = db::fetch('show columns from `'. $this->name .'`');
 	
 		foreach($columns as $column) {
-			$this->columns[ $column['Field'] ] = new DBColumn($this, $column);
+			$this->columns[ $column['Field'] ] = new DBColumn($this, $column['Field'], $column);
 		}
 
 		//$this->info = db::fetch("SHOW TABLE STATUS like '". $this->name() ."'");
