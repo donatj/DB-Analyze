@@ -3,6 +3,7 @@
 abstract class Database {
 
 	public static $link;
+	public static $last_qry = false;
 	
 	/**
 	* Constants for use with ::fetch
@@ -49,6 +50,7 @@ abstract class Database {
 
 		if( is_resource($query) ) { return $query; } 
 		$qry = mysql_query($query);
+		self::$last_qry = $query;
 		if(!$qry) self::error($query, mysql_error(), $fatal, $display);
 		return $qry;
 	}
