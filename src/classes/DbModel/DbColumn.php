@@ -1,13 +1,17 @@
 <?php
 
-class DBColumn {
+namespace DbModel;
+
+use conn;
+
+class DbColumn {
 
 	private $integer_types = array(
-		'tinyint'    => 255, 
-		'smallint'   => 65535, 
-		'mediumint'  => 16777215,
-		'int'        => 4294967295,
-		'bigint'     => 18446744073709551615,
+		'tinyint'   => 255,
+		'smallint'  => 65535,
+		'mediumint' => 16777215,
+		'int'       => 4294967295,
+		'bigint'    => 18446744073709551615,
 	);
 
 	private $text_types = array(
@@ -29,10 +33,10 @@ class DBColumn {
 	private $fks = array();
 	public $info;
 
-	function __construct(DBTable $table, $field, $columndata){
-		$this->tbl  = $table;
+	function __construct( DbTable $table, $field, $columndata ) {
+		$this->tbl   = $table;
 		$this->field = $field;
-		$this->data = $columndata;
+		$this->data  = $columndata;
 		$this->analyze();
 	}
 
@@ -44,27 +48,29 @@ class DBColumn {
 		return $this->field;
 	}
 
-	function add_fk(DBColumn $fk) {
-		$this->fks[ $fk->table()->name() ] = $fk;
+	function add_fk( DbColumn $fk ) {
+		$this->fks[$fk->table()->name()] = $fk;
 	}
 
 	function fks_type_mismatch() {
 		$mismatches = array();
-		foreach($this->fks as $fk) {
-			foreach($this->fk_checked as $check) {
+		foreach( $this->fks as $fk ) {
+			foreach( $this->fk_checked as $check ) {
 				if( $this->info[$check] != $fk->info[$check] ) {
-					$mismatches[ $fk->table()->name() ]['mismatched'][ $check ] = $fk->info[$check];
-					$mismatches[ $fk->table()->name() ]['column'] = $fk;
+					$mismatches[$fk->table()->name()]['mismatched'][$check] = $fk->info[$check];
+					$mismatches[$fk->table()->name()]['column']             = $fk;
 				}
 			}
 		}
+
 		return $mismatches;
 	}
 
 	function data() {
 		if( !$this->data ) {
-			$this->data = conn::fetch('describe `'. $this->tbl->name() .'` `'. $this->name() .'`', conn::ROW);
+			$this->data = conn::fetch('describe `' . $this->tbl->name() . '` `' . $this->name() . '`', conn::ROW);
 		}
+
 		return $this->data;
 	}
 

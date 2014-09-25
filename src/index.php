@@ -1,9 +1,11 @@
 #!/usr/bin/env php
 <?php
 
+use DbModel\DbBase;
+
 require('init.php');
 
-$dbase = new DBBase();
+$dbase = new DbBase();
 drop( $dbase->find_fk_type_mismatches() );
 
 // foreach( $table_data as $table ) {
