@@ -1,5 +1,7 @@
 <?php
 
+use Connectors\MySql;
+
 error_reporting(E_ALL ^ E_NOTICE);
 
 include('functions/global.php');
@@ -17,7 +19,7 @@ foreach( $settings as $setting => $value ) {
 }
 
 
-class db extends Database {
+class conn extends MySql {
 	protected static $_host     = SETTING_HOST;
 	protected static $_user     = SETTING_USER;
 	protected static $_password = SETTING_PASSWORD;

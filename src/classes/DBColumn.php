@@ -63,7 +63,7 @@ class DBColumn {
 
 	function data() {
 		if( !$this->data ) {
-			$this->data = db::fetch('describe `'. $this->tbl->name() .'` `'. $this->name() .'`', DB::ROW);
+			$this->data = conn::fetch('describe `'. $this->tbl->name() .'` `'. $this->name() .'`', conn::ROW);
 		}
 		return $this->data;
 	}

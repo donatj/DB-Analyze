@@ -16,9 +16,9 @@ die('x');
 
 //drop($table_data['error_log']);
 
-echo '# Database Analysis' . PHP_EOL;
+echo '# MySql Analysis' . PHP_EOL;
 
-$table_status = db::fetch('SHOW TABLE STATUS', db::KEYROW);
+$table_status = conn::fetch('SHOW TABLE STATUS', conn::KEYROW);
 
 echo '## Structural/Data Optimizations / Problems' . PHP_EOL;
 
@@ -32,12 +32,12 @@ foreach( $table_data as $table_name => $table ) {
 		$maxss = array();
 		$minss = array();
 		foreach($ints as $int_k => $int) {
-			$maxss[] = 'max(`'.db::input($int_k).'`) AS `' . db::input($int_k) . '`';
-			$minss[] = 'min(`'.db::input($int_k).'`) AS `' . db::input($int_k) . '`';
+			$maxss[] = 'max(`'.conn::input($int_k).'`) AS `' . conn::input($int_k) . '`';
+			$minss[] = 'min(`'.conn::input($int_k).'`) AS `' . conn::input($int_k) . '`';
 		}
 
-		$max = db::fetch('SELECT ' . implode(', ', $maxss) . ' FROM ' . $table_name, db::ROW);
-		$min = db::fetch('SELECT ' . implode(', ', $minss) . ' FROM ' . $table_name, db::ROW);
+		$max = conn::fetch('SELECT ' . implode(', ', $maxss) . ' FROM ' . $table_name, conn::ROW);
+		$min = conn::fetch('SELECT ' . implode(', ', $minss) . ' FROM ' . $table_name, conn::ROW);
 		
 		foreach($ints as $int_k => $int) {
 			$table[ $int_k ]['max_value'] = $max[ $int_k ];

@@ -14,13 +14,13 @@ class DBTable {
 
 	function analyze() {
 		$this->columns = array();
-		$columns = db::fetch('show columns from `'. $this->name .'`');
+		$columns = conn::fetch('show columns from `'. $this->name .'`');
 	
 		foreach($columns as $column) {
 			$this->columns[ $column['Field'] ] = new DBColumn($this, $column['Field'], $column);
 		}
 
-		//$this->info = db::fetch("SHOW TABLE STATUS like '". $this->name() ."'");
+		//$this->info = conn::fetch("SHOW TABLE STATUS like '". $this->name() ."'");
 	}
 
 	function find_possible_fks(DBTable $table) {

@@ -5,7 +5,7 @@ class DBBase {
 	private $tables;
 
 	function __construct() {
-		$tables = db::fetch('show tables', db::FLAT);
+		$tables = conn::fetch('show tables', conn::FLAT);
 		foreach($tables as $table) {
 			if($table[0] == '_') continue;
 			$this->tables[$table] = new DBTable($table);
